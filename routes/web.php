@@ -8,15 +8,14 @@ use Illuminate\Support\Facades\Route;
 use Laravel\Nightwatch\Facades\Nightwatch;
 
 Route::get('/', function () {
-    $stack = new HandlerStack;
-    $stack->setHandler(new CurlHandler);
+    $stack = HandlerStack::create();
 
     $stack->push(Nightwatch::guzzleMiddleware());
 
     $client = new Client(['handler' => $stack]);
 
     try {
-        $client->request('GET', 'https://laravel.com/404');
+        $client->request('GET', 'https://laravel.com');
 
         dd(
             'Should only get here if the request was successful.',
